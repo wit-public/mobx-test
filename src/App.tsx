@@ -1,12 +1,14 @@
 import "./App.less";
 import * as React from "react";
-import {Button, Layout} from "antd";
+import {Layout, Tabs} from "antd";
+import {TypesList} from "./components/TypesList";
 import Component = React.Component;
-const {Header, Content, Footer, Sider} = Layout;
+
 // import Button from "antd/lib/button/button";
 // const Button = require("antd/lib/button")
 
-
+const TabPane = Tabs.TabPane;
+const {Header, Content, Footer, Sider} = Layout;
 export interface AppState {
     menuOpen?: boolean;
 }
@@ -26,14 +28,17 @@ export class App extends Component<AppProps, AppState> {
         return <Layout style={{height:"100%"}}>
             <Header className="header">Header</Header>
             <Layout style={{height:"100%"}}>
-                <Sider width={200} style={{ background: '#fff' }}> sider</Sider>
+                <Sider width={400} style={{ background: '#fff' }}>
+                    <TypesList/>
+                </Sider>
                 <Content style={{height:"100%"}}>
-                    <div style={{ background: '#fff', padding: 24, height:"100%"}}>
-                        Content
-                        <Button type="primary">
-                            Loadingasdasd
-                        </Button>
-                    </div>
+                    <Tabs defaultActiveKey="1" style={{height:"100%"}}>
+                        <TabPane tab="Tab 1" key="1" style={{height:"100%",padding:45}}>
+                            <TypesList/>
+                        </TabPane>
+                        <TabPane tab="Tab 2" key="2">Content of Tab Pane 2</TabPane>
+                        <TabPane tab="Tab 3" key="3">Content of Tab Pane 3</TabPane>
+                    </Tabs>
                 </Content>
             </Layout>
         </Layout>;

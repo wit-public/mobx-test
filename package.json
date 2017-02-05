@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/antd": "^0.12.32",
     "@types/bluebird": "^3.0.37",
     "@types/jquery": "^2.0.40",
     "@types/react": "^0.14.47",

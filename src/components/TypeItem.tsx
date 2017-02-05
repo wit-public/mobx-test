@@ -2,6 +2,7 @@ import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
 import {ObjType} from "../api/ObjType";
 import * as React from "React";
+import {Menu} from "antd";
 
 export interface TypeItemProps extends ClassAttributes<TypeItem> {
     type?: ObjType;
@@ -29,6 +30,6 @@ export class TypeItem extends Component<TypeItemProps, TypeItemState> {
 
     public render() {
         const {type} = this.props;
-        return  <li>{type.name}</li>;
+        return  <Menu.Item key={this.props.key}>{type.name}</Menu.Item>;
     }
 }
