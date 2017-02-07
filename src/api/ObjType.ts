@@ -1,15 +1,17 @@
-import {IdNameIdent} from "../utils";
-import {ObjAttr} from "./ObjAttr";
-import * as shortid from "shortid";
+import {ObjAttrs} from "./ObjAttr";
+import {Obj, createObj} from "./Obj";
 
+export const TYPE_TYPE_ID = "1";
 
-export interface ObjType extends IdNameIdent {
-    attrs: Array<ObjAttr>;
+export interface ObjType extends Obj {
+    attrs: ObjAttrs;
+    typeId: "1";
 }
 
 export type ObjTypes = Array<ObjType>;
 
-export function createType(name: string, ident: string, attrs: Array<ObjAttr> = []): ObjType {
-    const uuid = shortid.generate();
-    return {uuid, ident, name, attrs};
+export function createType(name: string, ident: string, attrs: ObjAttrs): ObjType {
+    const obj = createObj(name, ident, TYPE_TYPE_ID, {}) as ObjType;
+    obj.attrs = attrs;
+    return obj;
 }

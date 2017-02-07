@@ -1,5 +1,5 @@
 import {Store, getEmptyStore} from "./Store";
-import {ObjType, ObjTypes} from "./ObjType";
+import {ObjType, ObjTypes, TYPE_TYPE_ID} from "./ObjType";
 import {Obj, Objects} from "./Obj";
 import {findById, addOrReplace} from "../utils";
 import * as shortid from "shortid";
@@ -30,7 +30,9 @@ export class Api {
     }
 
     public static getTypes(store = this.getStore(), timeout = API_TIMEOUT): Bluebird<ObjTypes> {
-        return timeoutPromise(store.types, timeout);
+        return timeoutPromise(store.objects.filter(obj =>
+            obj.typeId === TYPE_TYPE_ID
+        ) as ObjTypes, timeout);
     }
 
     public static getObjects(store = this.getStore(), timeout = API_TIMEOUT): Bluebird<Objects> {
@@ -38,7 +40,7 @@ export class Api {
     }
 
     public static getTypeById(id: string, timeout = API_TIMEOUT): Bluebird<ObjType> {
-        return this.getTypes().then(types => findById(types, id));
+        return this.getObjects().then(objects => findById(objects, id) as ObjType);
     }
 
     public static getObjById(id: string, timeout = API_TIMEOUT): Bluebird<Obj> {
@@ -49,7 +51,7 @@ export class Api {
         localStorage.setItem(LOCAL_STORAGE_FIELD, JSON.stringify(store));
     }
 
-    public static saveObjects(newObjects: Objects): Bluebird<Obj> {
+    public static saveObjects(newObjects: Objects): Bluebird<Objects> {
         const store = this.getStore();
         return this.getObjects(store).then(objects =>
             newObjects.map(obj => {

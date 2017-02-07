@@ -3,10 +3,12 @@
     "target": "es6",
     "sourceMap": true,
     "jsx": "react",
-//    "module": "commonjs",
-    "noEmit": true,
+    //    "module": "commonjs",
+    //    "noEmit": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "preserveConstEnums": false,
+    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules"

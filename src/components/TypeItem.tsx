@@ -1,7 +1,7 @@
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
 import {ObjType} from "../api/ObjType";
-import * as React from "React";
+import * as React from "react";
 import {Menu} from "antd";
 
 export interface TypeItemProps extends ClassAttributes<TypeItem> {

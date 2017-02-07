@@ -1,17 +1,17 @@
 import {Api} from "../api/Api";
-import {ObjTypes, ObjType, createType} from "../api/ObjType";
 import {TypeCreate} from "./TypeCreate";
-import * as React from "React";
+import * as React from "react";
 import * as Bluebird from "bluebird";
 import {Menu, Button, Layout} from "antd";
 import {SelectParam} from "antd/lib/menu";
+import {ObjTypes, createType, ObjType} from "../api/ObjType";
 const {Header, Content, Footer, Sider} = Layout;
 import ClassAttributes = React.ClassAttributes;
 import Component = React.Component;
 
 
 export interface TypesListProps extends ClassAttributes<TypesList> {
-
+    onTypeSelect: (typeId: string) => Bluebird<boolean>;
 }
 
 export interface TypesListState {
@@ -73,7 +73,7 @@ export class TypesList extends Component<TypesListProps, TypesListState> {
 
     private onRandomClick = () => {
         for (let i = 1; i <= 100; i++) {
-            const type = createType(`type${i}`, `type${i}`);
+            const type = createType(`type${i}`, `type${i}`, []);
             this.addType(type);
         }
     }
@@ -102,15 +102,19 @@ export class TypesList extends Component<TypesListProps, TypesListState> {
     }
 
     private onSelectType = (param: SelectParam) => {
-        this.setState({selectedType: param.selectedKeys});
+        let promise = Bluebird.resolve(true);
+        if (this.props.onTypeSelect) {
+            promise = this.props.onTypeSelect(param.selectedKeys[0])
+        }
+        promise.then(confirm => confirm && this.setState({selectedType: param.selectedKeys}));
     }
 
     public getContent() {
         const {types, selectedType} = this.state;
-        return <Menu mode="inline"
-                     selectedKeys={selectedType}
-                     style={{ minHeight: '100%' }}
-                     onSelect={this.onSelectType}>
+        return<Menu mode="inline"
+                    selectedKeys={selectedType}
+                    style={{ minHeight: '100%' }}
+                    onSelect={this.onSelectType}>
             {types.map(type => <Menu.Item key={type.id || type.uuid}>{type.name}</Menu.Item>)}
         </Menu>;
     }
@@ -145,7 +149,6 @@ export class TypesList extends Component<TypesListProps, TypesListState> {
                     {this.getAddControl()}
                 </Content>
             </Layout>
-            {/*{this.getAddControl()}*/}
-        </Layout>;
+        </Layout >;
     }
 }

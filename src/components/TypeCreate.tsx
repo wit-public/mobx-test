@@ -55,14 +55,18 @@ export class TypeCreate extends Component<TypeCreateProps, TypeCreateState> {
         if (!name || !ident || !onCreate) {
             return;
         }
-        onCreate(createType(name, ident))
+        onCreate(createType(name, ident, []))
             .then(() => this.clearState())
     }
 
     public render() {
+        const {visible} = this.props;
+        if (!visible) {
+            return null;
+        }
         const {ident, name} = this.state;
         return <Modal title="Новый тип"
-                      visible={this.props.visible}
+                      visible={visible}
                       onOk={this.onCreate}
                       onCancel={this.props.onCancel}
                       okText="OK"
