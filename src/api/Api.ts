@@ -4,6 +4,7 @@ import {Obj, Objects} from "./Obj";
 import {findById, addOrReplace} from "../utils";
 import * as shortid from "shortid";
 import * as Bluebird from "bluebird";
+import {getObjTypeId, setObjId, getObjId} from "./utils";
 
 
 export const API_TIMEOUT = 2000;
@@ -29,13 +30,13 @@ export class Api {
         return store;
     }
 
-    public static getTypes(store = this.getStore(), timeout = API_TIMEOUT): Bluebird<ObjTypes> {
+    public static getTypes = (store = Api.getStore(), timeout = API_TIMEOUT): Bluebird<ObjTypes> => {
         return timeoutPromise(store.objects.filter(obj =>
-            obj.typeId === TYPE_TYPE_ID
+            getObjTypeId(obj) === TYPE_TYPE_ID
         ) as ObjTypes, timeout);
     }
 
-    public static getObjects(store = this.getStore(), timeout = API_TIMEOUT): Bluebird<Objects> {
+    public static getObjects = (store = Api.getStore(), timeout = API_TIMEOUT): Bluebird<Objects> => {
         return timeoutPromise(store.objects, timeout);
     }
 
@@ -52,29 +53,23 @@ export class Api {
     }
 
     public static saveObjects(newObjects: Objects): Bluebird<Objects> {
+        return timeoutPromise(this.addToObjStore(newObjects));
+    }
+
+    private static addToObjStore<T extends Obj>(newObjects: Array<T>): Array<T> {
         const store = this.getStore();
-        return this.getObjects(store).then(objects =>
-            newObjects.map(obj => {
-                obj.id = obj.id || shortid.generate();
-                delete obj.uuid;
-                addOrReplace(objects, obj);
-                this.save(store);
-                return obj;
-            })
-        );
+        const result = newObjects.map(obj => {
+            setObjId(obj, getObjId(obj) || shortid.generate());
+            delete obj.values.uuid;
+            addOrReplace(store.objects, obj);
+            return obj;
+        });
+        this.save(store);
+        return result;
     }
 
     public static saveTypes(newTypes: ObjTypes): Bluebird<ObjTypes> {
-        const store = this.getStore();
-        return this.getTypes(store).then(types =>
-            newTypes.map(type => {
-                type.id = type.id || shortid.generate();
-                delete type.uuid;
-                addOrReplace(types, type);
-                this.save(store);
-                return type;
-            })
-        )
+        return timeoutPromise(this.addToObjStore(newTypes));
     }
 }
 

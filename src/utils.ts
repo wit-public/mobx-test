@@ -1,3 +1,6 @@
+import {Obj} from "./api/obj";
+import {getObjId} from "./api/utils";
+
 export type StringMap<T> = {[index: string]: T}
 
 export type NumberMap<T> = {[index: number]: T}
@@ -15,16 +18,16 @@ export interface IdNameIdent extends IdName {
     ident?: string;
 }
 
-export function findById<T extends Id>(objects: Array<T>, id: string) {
-    return objects.find(obj => obj.id === id);
+export function findById<T extends Obj>(objects: Array<T>, id: string) {
+    return objects.find(obj => getObjId(obj) === id);
 }
 
-export function findIndexById<T extends Id>(objects: Array<T>, id: string) {
-    return objects.findIndex(obj => obj.id === id);
+export function findIndexById<T extends Obj>(objects: Array<T>, id: string) {
+    return objects.findIndex(obj => getObjId(obj) === id);
 }
 
-export function addOrReplace<T extends Id>(objects: Array<T>, obj: T) {
-    const id = obj.id;
+export function addOrReplace<T extends Obj>(objects: Array<T>, obj: T) {
+    const id =  getObjId(obj);
     const idx = findIndexById(objects, id);
     if (idx !== -1) {
         objects.splice(idx, 1, obj)

@@ -1,4 +1,4 @@
-import {TYPE_TYPE_ID} from "./ObjType";
+import {TYPE_TYPE_ID, getTypeObj} from "./ObjType";
 import {Objects, OBJ_TYPE_ID} from "./Obj";
 import {OBJ_ATTR_TYPE_ID} from "./ObjAttr";
 
@@ -13,25 +13,28 @@ export function getEmptyStore(): Store {
         // types: [],
         objects: [
             {
-                id: TYPE_TYPE_ID,
-                name: "Тип объекта",
-                ident: "OBJ_TYPE",
-                fields: {},
-                typeId: TYPE_TYPE_ID
+                values: {
+                    ID: TYPE_TYPE_ID,
+                    NAME: "Тип объекта",
+                    IDENT: "OBJ_TYPE",
+                    TYPE_ID: getTypeObj()
+                }
             },
             {
-                id: OBJ_TYPE_ID,
-                name: "Объект",
-                ident: "OBJECT",
-                fields: {},
-                typeId: "1"
+                values: {
+                    ID: OBJ_TYPE_ID,
+                    NAME: "Объект",
+                    IDENT: "OBJECT",
+                    TYPE_ID: getTypeObj()
+                }
             },
             {
-                id: OBJ_ATTR_TYPE_ID,
-                name: "Атрибут объекта",
-                ident: "OBJ_ATTR",
-                fields: {},
-                typeId: "1"
+                values: {
+                    ID: OBJ_ATTR_TYPE_ID,
+                    NAME: "Атрибут объекта",
+                    IDENT: "OBJ_ATTR",
+                    TYPE_ID: getTypeObj()
+                }
             }
         ]
     }

@@ -1,6 +1,6 @@
 import * as React from "react";
-import {Modal} from "antd";
 import {If} from "./utils/If";
+import {AModal} from "./antdwrap/antdwrap";
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
 
@@ -36,10 +36,10 @@ export class OpenModal extends Component<OpenModalProps, OpenModalState> {
                 open Modal
             </button>
             <If cond={modalVisisble}>
-                <Modal visible={modalVisisble}
-                       onCancel={() => this.setState({modalVisisble:false})}>
+                <AModal visible={modalVisisble}
+                        onCancel={() => this.setState({modalVisisble:false})}>
                     <OpenModal/>
-                </Modal>
+                </AModal>
             </If>
         </div>;
     }

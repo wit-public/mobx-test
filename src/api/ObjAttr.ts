@@ -1,6 +1,8 @@
-import {Obj, createObj} from "./Obj";
+import {Obj, createObj, ObjFields} from "./Obj";
+import {idNameToObj} from "./utils";
 
 export const OBJ_ATTR_TYPE_ID = "2";
+export const OBJ_ATTR_TYPE_NAME = "Атрибут";
 
 export enum ObjAttrType {
     String,
@@ -13,16 +15,21 @@ export const ObjAttrTypeName = {
 }
 
 export interface ObjAttr extends Obj {
-    type: ObjAttrType;
-    isRequired?: boolean;
-    typeId: "2";
+    values: ObjAttrField;
 }
 
+
+export interface ObjAttrField extends ObjFields {
+    ATTR_TYPE: ObjAttrType;
+    TYPE_ID: {
+        values: {ID: "2"}
+    };
+}
 
 export type ObjAttrs = Array<ObjAttr>;
 
 export function createObjAttr(name: string, ident: string, type: ObjAttrType): ObjAttr {
-    const attr = createObj(name, ident, OBJ_ATTR_TYPE_ID, {}) as ObjAttr;
-    attr.type=type;
+    const attr = createObj(name, ident, idNameToObj(OBJ_ATTR_TYPE_ID, OBJ_ATTR_TYPE_NAME)) as ObjAttr;
+    attr.values.ATTR_TYPE = type;
     return attr;
 }

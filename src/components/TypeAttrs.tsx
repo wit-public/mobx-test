@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Layout, Button} from "antd";
 import {ObjAttrTypeName} from "../api/ObjAttr";
 import {ObjType} from "../api/ObjType";
 import {Api} from "../api/Api";
@@ -9,8 +8,8 @@ import {CreateAttrModal} from "./CreateAttrModal";
 import * as Bluebird from "bluebird";
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
+import {AButton, ALayout, AHeader, AContent} from "./antdWrap/AntdWrap";
 
-const {Header, Content, Footer, Sider} = Layout;
 
 export interface TypeAttrsProps extends ClassAttributes<TypeAttrs> {
     typeId: string;
@@ -91,27 +90,27 @@ export class TypeAttrs extends Component<TypeAttrsProps, TypeAttrsState> {
     private getButtons() {
         const {loading, saveLoading} = this.state;
         return <div>
-            <Button size="large"
-                    onClick={this.onRefreshClick}
-                    icon={loading && "loading" || "reload"}
-                    disabled={loading||saveLoading}/>
-            <Button size="large"
-                    onClick={this.onAddClick}
-                    icon="plus"
-                    disabled={loading||saveLoading}/>
-            <Button size="large"
-                    onClick={this.onSaveClick}
-                    icon={saveLoading && "loading" || "save"}
-                    disabled={loading || saveLoading}/>
+            <AButton size="large"
+                     onClick={this.onRefreshClick}
+                     icon={loading && "loading" || "reload"}
+                     disabled={loading||saveLoading}/>
+            <AButton size="large"
+                     onClick={this.onAddClick}
+                     icon="plus"
+                     disabled={loading||saveLoading}/>
+            <AButton size="large"
+                     onClick={this.onSaveClick}
+                     icon={saveLoading && "loading" || "save"}
+                     disabled={loading || saveLoading}/>
         </div>
     }
 
     public render() {
         const {type, loading, createModalVisible}= this.state;
-        const dataSource = type && type.attrs || [];
-        return <Layout>
-            <Header>{this.getButtons()}</Header>
-            <Content>
+        const dataSource = type && type.values.TYPE_ATTRS || [];
+        return <ALayout>
+            <AHeader>{this.getButtons()}</AHeader>
+            <AContent>
                 <TypeAttrsTable loading={loading}
                                 columns={this.columns}
                                 dataSource={dataSource}
@@ -119,7 +118,7 @@ export class TypeAttrs extends Component<TypeAttrsProps, TypeAttrsState> {
                 <CreateAttrModal visible={createModalVisible}
                                  onCancel={this.closeModal}
                                  onCreate={this.saveAttr}/>
-            </Content>
-        </Layout>;
+            </AContent>
+        </ALayout>;
     }
 }

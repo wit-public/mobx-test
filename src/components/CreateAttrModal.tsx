@@ -1,14 +1,11 @@
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
-import {Modal, Form, Input, Select} from "antd";
 import * as React from "react";
 import {ObjAttr, ObjAttrType, ObjAttrTypeName, createObjAttr} from "../api/ObjAttr";
 import * as Bluebird from "bluebird";
 import {EnumEx} from "../utils";
+import {AModal, AForm, AFormItem, AInput, ASelect, AOption} from "./antdWrap/AntdWrap";
 import FormEvent = React.FormEvent;
-
-const FormItem = Form.Item;
-const Option = Select.Option;
 
 export interface CreateAttrModalProps extends ClassAttributes<CreateAttrModal> {
     visible?: boolean;
@@ -72,36 +69,36 @@ export class CreateAttrModal extends Component<CreateAttrModalProps, CreateAttrM
             return null;
         }
         const {ident, name, loading} = this.state;
-        return <Modal visible={visible}
-                      title="Новый атрибут"
-                      onOk={this.onCreate}
-                      onCancel={this.props.onCancel}
-                      okText="OK"
-                      cancelText="Отмена"
-                      confirmLoading={loading}>
-            <Form vertical>
-                <FormItem wrapperCol={{offset:6,span:12}}>
-                    <Input value={name}
-                           onChange={this.onNameChange}
-                           placeholder="Наименование"/>
-                </FormItem>
-                <FormItem wrapperCol={{offset:6,span:12}}>
-                    <Input type="text"
-                           className="form-control"
-                           value={ident}
-                           onChange={this.onIdentChange}
-                           placeholder="Идент"/>
-                </FormItem>
-                <FormItem wrapperCol={{offset:6,span:12}}>
-                    <Select onChange={this.onTypeSelect}>
+        return <AModal visible={visible}
+                       title="Новый атрибут"
+                       onOk={this.onCreate}
+                       onCancel={this.props.onCancel}
+                       okText="OK"
+                       cancelText="Отмена"
+                       confirmLoading={loading}>
+            <AForm vertical>
+                <AFormItem wrapperCol={{offset:6,span:12}}>
+                    <AInput value={name}
+                            onChange={this.onNameChange}
+                            placeholder="Наименование"/>
+                </AFormItem>
+                <AFormItem wrapperCol={{offset:6,span:12}}>
+                    <AInput type="text"
+                            className="form-control"
+                            value={ident}
+                            onChange={this.onIdentChange}
+                            placeholder="Идент"/>
+                </AFormItem>
+                <AFormItem wrapperCol={{offset:6,span:12}}>
+                    <ASelect onChange={this.onTypeSelect}>
                         {EnumEx.getValues<ObjAttrType>(ObjAttrType).map(type =>
-                            <Option key={type.toString()}
-                                    value={type.toString()}>
+                            <AOption key={type.toString()}
+                                     value={type.toString()}>
                                 {ObjAttrTypeName[type]}
-                            </Option>)}
-                    </Select>
-                </FormItem>
-            </Form>
-        </Modal>;
+                            </AOption>)}
+                    </ASelect>
+                </AFormItem>
+            </AForm>
+        </AModal>;
     }
 }

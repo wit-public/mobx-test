@@ -1,24 +1,17 @@
 import "./App.less";
 import * as React from "react";
-import {Layout, Tabs, Modal} from "antd";
-import {TypesList} from "./components/TypesList";
-import {TypeAttrs} from "./components/typeattrs";
-import * as Bluebird from "bluebird";
 import {MobxTest} from "./components/mobx/MobxTest";
 import {Obj, TestObj} from "./components/mobx/Obj";
 import {Provider} from "mobx-react";
 import {OpenModal} from "./components/openmodal";
+import {BigTableTest} from "./components/bigTable/BigTableTest";
+import {columns, rows} from "./components/bigTable/data";
+import {ALayout, ATabs, AHeader, AContent, ATabPane} from "./components/antdWrap/AntdWrap";
+import {TypesView} from "./components/typesView/TypesView";
 import Component = React.Component;
-const confirm = Modal.confirm;
-
-// import Button from "antd/lib/button/button";
-// const Button = require("antd/lib/button")
-
-const TabPane = Tabs.TabPane;
-const {Header, Content, Footer, Sider} = Layout;
 
 export interface AppState {
-    selectedTypeId?: string;
+
 }
 
 export interface AppProps {
@@ -42,51 +35,30 @@ export class App extends Component<AppProps, AppState> {
         this.state = {};
     }
 
-    private onTypeSelect = (selectedTypeId: string) => {
-        return new Bluebird<boolean>(res => {
-            confirm({
-                title: 'Изменения будут потеряны',
-                content: 'Прдолжить?',
-                onOk: () => {
-                    res(true);
-                    this.setState({selectedTypeId});
-                },
-                onCancel() {
-                    res(false);
-                },
-                okText: "Продожить",
-                cancelText: "Отмена"
-            });
-
-        })
-    }
-
     render() {
-        const {selectedTypeId} = this.state;
         return <Provider obj={obj}>
-            <Layout style={{height:"100%"}}>
-                <Header className="header">Header</Header>
-                <Layout style={{height:"100%"}}>
-                    <Sider width={400} style={{ background: '#fff' }}>
-                        <TypesList onTypeSelect={this.onTypeSelect}/>
-                    </Sider>
-                    <Content style={{height:"100%"}}>
-                        <Tabs defaultActiveKey="1" style={{height:"100%"}}>
-                            <TabPane tab="Атрибуты" key="1" style={{height:"100%"}}>
+            <ALayout style={{height:"100%"}}>
+                <AHeader className="header">Header</AHeader>
+                <ALayout style={{height:"100%"}}>
+                    <AContent style={{height:"100%"}}>
+                        <ATabs defaultActiveKey="1" style={{height:"100%"}}>
+                            <ATabPane tab="Big hier table test" key="1">
+                                <TypesView/>
+                            </ATabPane>
+                            <ATabPane tab="Mobx test" key="2">
                                 <MobxTest showAlert={() => alert("123")}/>
-                                <h1>asdasdasdasdsad</h1>
-                                <MobxTest showAlert={() => alert("321")}/>
-                            </TabPane>
-                            <TabPane tab="Tab 2" key="2">
-                                <TypeAttrs typeId={selectedTypeId}/>
-                            </TabPane>
-                            <TabPane tab="Tab 3" key="3">
+                            </ATabPane>
+                            <ATabPane tab="Nested Modals test" key="3">
                                 <OpenModal/>
-                            </TabPane>
-                        </Tabs>
-                    </Content>
-                </Layout>
-            </Layout>
+                            </ATabPane>
+                            <ATabPane tab="Big hier table test" key="4">
+                                <BigTableTest columns={columns} dataSource={rows}/>
+                            </ATabPane>
+
+                        </ATabs>
+                    </AContent>
+                </ALayout>
+            </ALayout>
         </Provider> ;
     }
 }

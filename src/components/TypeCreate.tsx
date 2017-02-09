@@ -1,12 +1,10 @@
 import * as React from "react";
 import {ObjType, createType} from "../api/ObjType";
 import * as Bluebird from "bluebird";
-import {Form, Input, Modal} from "antd";
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
 import FormEvent = React.FormEvent;
-
-const FormItem = Form.Item;
+import {AModal, AForm, AFormItem, AInput} from "./antdWrap/AntdWrap";
 
 
 export interface TypeCreateProps extends ClassAttributes<TypeCreate> {
@@ -65,27 +63,27 @@ export class TypeCreate extends Component<TypeCreateProps, TypeCreateState> {
             return null;
         }
         const {ident, name} = this.state;
-        return <Modal title="Новый тип"
-                      visible={visible}
-                      onOk={this.onCreate}
-                      onCancel={this.props.onCancel}
-                      okText="OK"
-                      cancelText="Отмена"
-                      confirmLoading={this.state.loading}>
-            <Form vertical>
-                <FormItem wrapperCol={{offset:6,span:12}}>
-                    <Input value={name}
-                           onChange={this.onNameChange}
-                           placeholder="Наименование"/>
-                </FormItem>
-                <FormItem wrapperCol={{offset:6,span:12}}>
-                    <Input type="text"
-                           className="form-control"
-                           value={ident}
-                           onChange={this.onIdentChange}
-                           placeholder="Идент"/>
-                </FormItem>
-            </Form>
-        </Modal>;
+        return <AModal title="Новый тип"
+                       visible={visible}
+                       onOk={this.onCreate}
+                       onCancel={this.props.onCancel}
+                       okText="OK"
+                       cancelText="Отмена"
+                       confirmLoading={this.state.loading}>
+            <AForm vertical>
+                <AFormItem wrapperCol={{offset:6,span:12}}>
+                    <AInput value={name}
+                            onChange={this.onNameChange}
+                            placeholder="Наименование"/>
+                </AFormItem>
+                <AFormItem wrapperCol={{offset:6,span:12}}>
+                    <AInput type="text"
+                            className="form-control"
+                            value={ident}
+                            onChange={this.onIdentChange}
+                            placeholder="Идент"/>
+                </AFormItem>
+            </AForm>
+        </AModal>;
     }
 }
